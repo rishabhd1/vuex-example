@@ -9,28 +9,28 @@
         <md-list>
           <md-list-item>
             <md-icon>move_to_inbox</md-icon>
-            <span class="md-list-item-text" @click="title = 'Home'">
+            <span class="md-list-item-text" @click="pageTitle">
               <router-link to="/">Home</router-link>
             </span>
           </md-list-item>
 
           <md-list-item>
             <md-icon>send</md-icon>
-            <span class="md-list-item-text" @click="title = 'User'">
+            <span class="md-list-item-text" @click="pageTitle">
               <router-link to="/user">User</router-link>
             </span>
           </md-list-item>
 
           <md-list-item>
             <md-icon>delete</md-icon>
-            <span class="md-list-item-text" @click="title = 'Packs'">
+            <span class="md-list-item-text" @click="pageTitle">
               <router-link to="/packs">Packs</router-link>
             </span>
           </md-list-item>
 
           <md-list-item>
             <md-icon>error</md-icon>
-            <span class="md-list-item-text" @click="title = 'Update'">
+            <span class="md-list-item-text" @click="pageTitle">
               <router-link to="/update">Update</router-link>
             </span>
           </md-list-item>
@@ -51,6 +51,20 @@ export default {
     return {
       title: "Home"
     };
+  },
+
+  mounted() {
+    this.pageTitle();
+  },
+
+  methods: {
+    pageTitle() {
+      this.title = window.location.hash.replace("#/", "");
+      if (this.title.length === 0) {
+        this.title = "Home";
+      }
+      this.title = this.title.toUpperCase();
+    }
   }
 };
 </script>

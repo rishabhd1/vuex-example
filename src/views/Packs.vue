@@ -1,21 +1,28 @@
 <template>
   <div class="main">
-    <div v-for="pack in packs" :key="pack.name">
-      <md-card class="md-primary">
-        <md-card-header>
-          <div class="md-title">{{ pack.name.toUpperCase() }}</div>
-        </md-card-header>
+    <div class="pack">
+      <h2>PACKAGES</h2>
+      <div class="pack-info">
+        <md-card class="md-primary" v-for="pack in packs" :key="pack.name">
+          <div>
+            <md-card-header>
+              <div class="md-title">{{ pack.name.toUpperCase() }}</div>
+            </md-card-header>
 
-        <md-card-content>
-          Channels:
-          <li v-for="channel in pack.channels" :key="channel">{{ channel }}</li>
-          Monthly Price: {{ pack.price }}
-        </md-card-content>
+            <md-card-content>
+              Channels:
+              <li v-for="channel in pack.channels" :key="channel">
+                {{ channel }}
+              </li>
+              Monthly Price: {{ pack.price }}
+            </md-card-content>
+          </div>
 
-        <md-card-actions>
-          <md-button @click="subscribe(pack)">Subscribe</md-button>
-        </md-card-actions>
-      </md-card>
+          <md-card-actions>
+            <md-button @click="subscribe(pack)">Subscribe</md-button>
+          </md-card-actions>
+        </md-card>
+      </div>
     </div>
 
     <md-dialog-prompt
@@ -24,7 +31,7 @@
       md-title="Enter the Number of Months"
       md-input-placeholder="Number of Months"
       md-confirm-text="OK"
-      @md-confirm="confirmDialog = true"
+      @md-confirm="getSubscriptionAmount"
     />
 
     <md-dialog :md-active.sync="confirmDialog">
@@ -78,6 +85,7 @@ export default {
   methods: {
     getSubscriptionAmount() {
       this.subscriptionAmount = this.pack.price * this.numberOfMonths;
+      this.confirmDialog = true;
     },
     subscribe(pack) {
       this.pack = pack;
@@ -105,4 +113,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.pack-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.pack-info .md-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 350px;
+}
+</style>

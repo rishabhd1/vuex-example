@@ -10,7 +10,7 @@ export default new Vuex.Store({
       email: "john@doe.com",
       phone: 9923251513,
       balance: 100,
-      activePack: undefined,
+      activePack: "You don't have any pack active",
       activeChannels: undefined,
       activeServices: undefined
     },
@@ -62,7 +62,7 @@ export default new Vuex.Store({
     },
 
     confirmSubscribe: (context, payload) => {
-      context.commit("confirmSubscribe", payload)
+      context.commit("confirmSubscribe", payload);
     }
   },
 
