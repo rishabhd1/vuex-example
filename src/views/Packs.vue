@@ -33,7 +33,8 @@
         You have successfully subscribed the following packs: {{ pack.name }}
       </h4>
       <h4>Monthly Price: {{ pack.price }}</h4>
-      <h4>No. of Months: {{ this.numberOfMonths }}</h4>
+      <h4>No. of Months: {{ numberOfMonths }}</h4>
+      <h4>Subscription Amount: {{ subscriptionAmount }}</h4>
 
       <md-dialog-actions>
         <md-button class="md-primary" @click="confirmDialog = false"
@@ -57,6 +58,7 @@ export default {
   data() {
     return {
       pack: Object,
+      subscriptionAmount: undefined,
       subscribeDialog: false,
       confirmDialog: false,
       numberOfMonths: undefined
@@ -74,16 +76,25 @@ export default {
   },
 
   methods: {
+    getSubscriptionAmount() {
+      this.subscriptionAmount = this.pack.price * this.numberOfMonths;
+    },
     subscribe(pack) {
       this.pack = pack;
       if (pack.price <= this.user.balance) {
         this.subscribeDialog = true;
       } else {
         alert("Not Enought Balance");
+        return;
       }
     },
 
     confirmSubscribe() {
+      if (this.pack.price * this.numberOfMonths > this.user.balance) {
+        this.confirmDialog = false;
+        alert("Insufficient Balance");
+        return;
+      }
       let payload = this.pack;
       payload.numberOfMonths = this.numberOfMonths;
       this.$store.dispatch("confirmSubscribe", payload);
