@@ -7,7 +7,12 @@ export default new Vuex.Store({
   state: {
     // User information
     user: {
-      balance: 100
+      email: "john@doe.com",
+      phone: 9923251513,
+      balance: 100,
+      activePack: undefined,
+      activeChannels: undefined,
+      activeServices: undefined
     },
 
     // Available Packs for Subscription
@@ -39,15 +44,27 @@ export default new Vuex.Store({
       { name: "LearnCooking", price: "100" }
     ]
   },
+
   mutations: {
     rechargeBalance: (state, payload) => {
       state.user.balance += parseInt(payload, 10);
+    },
+
+    confirmSubscribe: (state, payload) => {
+      state.user.balance -= payload.price;
+      state.user.activePack = payload.name;
     }
   },
+
   actions: {
     rechargeBalance: (context, payload) => {
       context.commit("rechargeBalance", payload);
+    },
+
+    confirmSubscribe: (context, payload) => {
+      context.commit("confirmSubscribe", payload)
     }
   },
+
   modules: {}
 });

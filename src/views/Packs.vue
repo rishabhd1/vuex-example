@@ -3,19 +3,17 @@
     <div v-for="pack in packs" :key="pack.name">
       <md-card class="md-primary">
         <md-card-header>
-          <div class="md-title">{{ pack.name }}</div>
+          <div class="md-title">{{ pack.name.toUpperCase() }}</div>
         </md-card-header>
 
         <md-card-content>
           Channels:
-          <li v-for="channel in pack.channels" :key="channel">
-            {{ channel }}
-          </li>
-          Price: {{ pack.price }}
+          <li v-for="channel in pack.channels" :key="channel">{{ channel }}</li>
+          Monthly Price: {{ pack.price }}
         </md-card-content>
 
         <md-card-actions>
-          <md-button @click="subscribeDialog = true">Subscribe</md-button>
+          <md-button @click="subscribe(pack)">Subscribe</md-button>
         </md-card-actions>
       </md-card>
     </div>
@@ -27,21 +25,28 @@
       md-input-placeholder="Number of Months"
       md-confirm-text="OK"
       @md-confirm="confirmDialog = true"
-      @md-cancel="subscribeDialog = false"
     />
 
     <md-dialog :md-active.sync="confirmDialog">
       <md-dialog-title>Confirm</md-dialog-title>
+      <h4>
+        You have successfully subscribed the following packs: {{ pack.name }}
+      </h4>
+      <h4>Monthly Price: {{ pack.price }}</h4>
+      <h4>No. of Months: {{ this.numberOfMonths }}</h4>
 
       <md-dialog-actions>
         <md-button class="md-primary" @click="confirmDialog = false"
-          >Close</md-button
+          >Cancel</md-button
         >
-        <md-button class="md-primary" @click="confirmDialog = false"
-          >Save</md-button
+        <md-button class="md-primary" @click="confirmSubscribe"
+          >Confirm</md-button
         >
       </md-dialog-actions>
     </md-dialog>
+    <md-snackbar md-position="center" :md-active.sync="emailNotification">
+      <span>Email Notification Sent Succesfully</span>
+    </md-snackbar>
   </div>
 </template>
 
@@ -51,6 +56,7 @@ export default {
 
   data() {
     return {
+      pack: Object,
       subscribeDialog: false,
       confirmDialog: false,
       numberOfMonths: undefined
@@ -58,12 +64,33 @@ export default {
   },
 
   computed: {
+    user() {
+      return this.$store.state.user;
+    },
+
     packs() {
       return this.$store.state.packs;
     }
   },
 
-  methods: {}
+  methods: {
+    subscribe(pack) {
+      this.pack = pack;
+      if (pack.price <= this.user.balance) {
+        this.subscribeDialog = true;
+      } else {
+        alert("Not Enought Balance");
+      }
+    },
+
+    confirmSubscribe() {
+      let payload = this.pack;
+      payload.numberOfMonths = this.numberOfMonths;
+      this.$store.dispatch("confirmSubscribe", payload);
+      this.confirmDialog = false;
+      this.emailNotification = true;
+    }
+  }
 };
 </script>
 
