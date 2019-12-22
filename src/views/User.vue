@@ -1,15 +1,18 @@
 <template>
   <div class="main">
+    <h3>Email: {{ user.email }}</h3>
+    <h3>Phone: {{ user.phone }}</h3>
     <div class="user-info">
       <md-card>
-        <md-card-header>
-          <div class="md-title">Current Balance</div>
-        </md-card-header>
+        <div>
+          <md-card-header>
+            <div class="md-title">Current Balance</div>
+          </md-card-header>
 
-        <md-card-content
-          >Your Current Balance Is: {{ user.balance }}</md-card-content
-        >
-
+          <md-card-content
+            >Your Current Balance Is: {{ user.balance }}</md-card-content
+          >
+        </div>
         <md-card-actions>
           <md-button @click="rechargeDialog = true">Recharge</md-button>
         </md-card-actions>
@@ -19,7 +22,13 @@
           <div class="md-title">Pack</div>
         </md-card-header>
 
-        <md-card-content>Active Packs: {{ user.activePack }}</md-card-content>
+        <md-card-content>Active Pack: {{ user.activePack }}</md-card-content>
+        <md-card-content
+          >Active Channels: {{ user.activeChannels }}</md-card-content
+        >
+        <md-card-content
+          >Active Services: {{ user.activeServices }}</md-card-content
+        >
       </md-card>
     </div>
     <md-dialog-prompt
@@ -64,6 +73,12 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+}
+
+.user-info .md-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .user-info .md-card {

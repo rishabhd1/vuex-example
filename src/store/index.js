@@ -11,8 +11,8 @@ export default new Vuex.Store({
       phone: 9923251513,
       balance: 100,
       activePack: "You don't have any pack active",
-      activeChannels: undefined,
-      activeServices: undefined
+      activeChannels: "You don't have any channels active",
+      activeServices: "You don't have any services active"
     },
 
     // Available Packs for Subscription
@@ -53,6 +53,11 @@ export default new Vuex.Store({
     confirmSubscribe: (state, payload) => {
       state.user.balance -= payload.price;
       state.user.activePack = payload.name;
+    },
+
+    changeUserInfo: (state, payload) => {
+      state.user.phone = payload.phone;
+      state.user.email = payload.email;
     }
   },
 
@@ -63,6 +68,10 @@ export default new Vuex.Store({
 
     confirmSubscribe: (context, payload) => {
       context.commit("confirmSubscribe", payload);
+    },
+
+    changeUserInfo: (context, payload) => {
+      context.commit("changeUserInfo", payload);
     }
   },
 

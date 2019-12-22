@@ -25,6 +25,52 @@
       </div>
     </div>
 
+    <div class="channel">
+      <h2>CHANNELS</h2>
+      <div class="channel-info">
+        <md-card
+          class="md-primary"
+          v-for="channel in channels"
+          :key="channel.name"
+        >
+          <div>
+            <md-card-header>
+              <div class="md-title">{{ channel.name }}</div>
+            </md-card-header>
+
+            <md-card-content> Price: {{ channel.price }} </md-card-content>
+          </div>
+
+          <md-card-actions>
+            <md-button>Add</md-button>
+          </md-card-actions>
+        </md-card>
+      </div>
+    </div>
+
+    <div class="service">
+      <h2>SERVICE</h2>
+      <div class="service-info">
+        <md-card
+          class="md-primary"
+          v-for="service in services"
+          :key="service.name"
+        >
+          <div>
+            <md-card-header>
+              <div class="md-title">{{ service.name }}</div>
+            </md-card-header>
+
+            <md-card-content> Price: {{ service.price }} </md-card-content>
+          </div>
+
+          <md-card-actions>
+            <md-button>Add</md-button>
+          </md-card-actions>
+        </md-card>
+      </div>
+    </div>
+
     <md-dialog-prompt
       :md-active.sync="subscribeDialog"
       v-model="numberOfMonths"
@@ -68,7 +114,8 @@ export default {
       subscriptionAmount: undefined,
       subscribeDialog: false,
       confirmDialog: false,
-      numberOfMonths: undefined
+      numberOfMonths: undefined,
+      emailNotification: false
     };
   },
 
@@ -79,14 +126,18 @@ export default {
 
     packs() {
       return this.$store.state.packs;
+    },
+
+    channels() {
+      return this.$store.state.channels;
+    },
+
+    services() {
+      return this.$store.state.services;
     }
   },
 
   methods: {
-    getSubscriptionAmount() {
-      this.subscriptionAmount = this.pack.price * this.numberOfMonths;
-      this.confirmDialog = true;
-    },
     subscribe(pack) {
       this.pack = pack;
       if (pack.price <= this.user.balance) {
@@ -95,6 +146,11 @@ export default {
         alert("Not Enought Balance");
         return;
       }
+    },
+
+    getSubscriptionAmount() {
+      this.subscriptionAmount = this.pack.price * this.numberOfMonths;
+      this.confirmDialog = true;
     },
 
     confirmSubscribe() {
@@ -114,13 +170,17 @@ export default {
 </script>
 
 <style lang="scss">
-.pack-info {
+.pack-info,
+.channel-info,
+.service-info {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 }
 
-.pack-info .md-card {
+.pack-info .md-card,
+.channel-info .md-card,
+.service-info .md-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
