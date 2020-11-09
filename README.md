@@ -1,4 +1,4 @@
-# dth-techverito
+# dth
 
 ## Project setup
 
